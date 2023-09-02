@@ -1,0 +1,30 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+
+<section id="form">
+    <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <!-- <strong>Title</strong> --> {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <div class="container-sm">
+        <h1>Give two players to compare</h1>
+        <p><em>The choices are all players who have played more than 2 full games and are classified as a forward on FBref.</em></p>
+        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+    </div>
+</section>
+
+<!--Bootstrap Javascript-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

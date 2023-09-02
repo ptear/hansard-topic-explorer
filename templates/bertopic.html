@@ -1,0 +1,86 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+
+<div class="container">
+    <h3>Explanation</h3>
+    <p>
+        On this page you will find the main results of the models from the project. The two models fitted were a
+        topic model and a polarisation model.
+    </p>
+    <p>
+        The topic model chart has the date on the x-axis, and the frequency of topic on the y-axis.
+        Displayed on the chart are the top 10 most frequent topics over the period from 1945 until present.
+        To display only one topic, double-click on the corresponding legend key on the right of the chart.
+        To go back to displaying all topics, double-click on any of the keys.
+    </p>
+    <p>
+        The polarisation model chart has the date on the x-axis, and the polarisation score on the y-axis.
+        Displayed on the chart are the 3 major parties of the UK (Liberal Democrats, Labour and Conservatives).
+        As with the topic chart, double-click on the party you want to display in isolation.
+    </p>
+</div>
+
+<div class="visually-hidden">
+    <h1>Topic Chart Explanation</h1>
+    <p>
+        The first chart on the page displays the top ten most frequent topics over time according to the topic model.
+        For example, we can see on the chart that Northern Ireland is the most frequently discussed topic, with a peak
+        in frequency in 1998 around the Good Friday Agreement.
+    </p>
+    <h1>Per Decade Topic Chart Explanation</h1>
+    <p>
+        There is a simple form to select the decade to view. This enables you to view the most popular topics per decade.
+
+        For example, in the 1970s unions were a frequently discussed topic. In fact, it was more frequently discussed in
+        the 1970s than in any other decade.
+    </p>
+    <h1>Polarisation Chart Explanation</h1>
+    <p>
+        The final plot is of the polarisation model results over time. All three major political parties are displayed on
+        the same chart. On the x-axis is 'year' and on the y-axis the left-right score.
+
+        We observe a peak in LibDem rightness in the early 1970s.
+    </p>
+</div>
+
+<div class="container-sm" aria-hidden="true">
+    {{ graph_html_top | safe }}
+</div>
+
+<section id="decade_form" aria-hidden="true">
+    <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <!-- <strong>Title</strong> --> {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <div class="container-sm">
+<!--        <h1>Give a keyword related to a topic you are interested in!</h1>-->
+<!--        <p><em>Any word will do, for example 'school'</em></p>-->
+        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+    </div>
+</section>
+
+<div class="container-sm" aria-hidden="true">
+    {{ graph_html_dec | safe }}
+</div>
+
+<div class="container" aria-hidden="true">
+    <h3 class="text-center">Polarisation over Time</h3>
+    {{ graph_html_pol | safe }}
+</div>
+
+<!--Bootstrap Javascript-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

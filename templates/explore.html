@@ -1,0 +1,76 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include "header.html" %}
+
+<div class="visually-hidden">
+    <h1>Form and results explanation</h1>
+    <p>
+        This page contains two forms.
+
+        The first allows you to enter a keyword or phrase to search for topics with. It then displays the top 5 most
+        related topics to the keyword or words entered.
+
+        The second allows you to enter a topic id, and filter by other features such as year. It then displays the
+        speeches matching your search.
+    </p>
+</div>
+
+<section id="query_form">
+    <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <!-- <strong>Title</strong> --> {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <div class="container-sm">
+        <h1>Give a keyword related to a topic you are interested in!</h1>
+        <p><em>Any word will do, for example 'school'</em></p>
+        {{ wtf.quick_form(query_form, novalidate=True, button_map={"submit": "primary"}) }}
+
+        {% for topic in data_query %}
+        <p>{{topic}}</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section id="topic_form">
+    <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <!-- <strong>Title</strong> --> {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    </div>
+    <div class="container-sm">
+        <h1>Pick a topic you are interested in!</h1>
+        <p><em>Use an ID from your search above</em></p>
+        {{ wtf.quick_form(topic_form, novalidate=True, button_map={"submit": "primary"}) }}
+
+        {% for index, name in data_dict['scraped_name'].items() %}
+        <h6>Name: {{name}} || Party: {{data_dict['proc_party'][index]}} ||
+            Year: {{data_dict['year'][index]}} || TWFY Page:
+            <a href="{{data_dict['person_url'][index]}}" target="_blank" rel="noopener noreferrer">Link</a>
+            || Topic ID: {{data_dict['topic_id'][index]}}
+        </h6>
+        <p>Speech: {{data_dict['text'][index]}}</p>
+        {% endfor %}
+    </div>
+</section>
+
+<!--Bootstrap Javascript-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
